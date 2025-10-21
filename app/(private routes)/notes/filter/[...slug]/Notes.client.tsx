@@ -6,7 +6,7 @@ import css from "./page.module.css";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from "@/lib/api/api";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
 import Loader from "@/components/Loader/Loader";

@@ -1,13 +1,34 @@
 "use client";
 
-import { login, RegisterRequest } from "@/lib/api";
+import { login, LoginRequest } from "@/lib/api/api";
 import css from "./page.module.css";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ApiError } from "@/app/api/api";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function SignInPage() {
-  const handleSubmit = async (formdata: FormData) => {
-    const payload = Object.fromEntries(formdata) as RegisterRequest;
-    const user = await login(payload);
-    console.log(user);
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const setUser = useAuthStore((state) => state.setUser);
+  const handleSubmit = async (formData: FormData) => {
+    try {
+      const payload = Object.fromEntries(formData) as LoginRequest;
+      const data = await login(payload);
+      if (data) {
+        setUser(data);
+        router.push("/profile");
+      } else {
+        setError("Invalid email or password");
+      }
+      console.log(data);
+    } catch (error) {
+      setError(
+        (error as ApiError).response?.data?.error ??
+          (error as ApiError).message ??
+          "Oops... some error"
+      );
+    }
   };
 
   return (
@@ -43,7 +64,7 @@ export default function SignInPage() {
           </button>
         </div>
 
-        <p className={css.error}>error</p>
+        <p className={css.error}>{error}</p>
       </form>
     </main>
   );
