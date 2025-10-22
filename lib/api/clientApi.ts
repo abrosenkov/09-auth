@@ -32,12 +32,12 @@ type CheckSessionRequest = {
   success: boolean;
 };
 
-export const register = async (body: RegisterRequest) => {
+export const register = async (body: RegisterRequest): Promise<User> => {
   const response = await nextServer.post<User>("/auth/register", body);
   return response.data;
 };
 
-export const login = async (body: LoginRequest) => {
+export const login = async (body: LoginRequest): Promise<User> => {
   const response = await nextServer.post<User>("/auth/login", body);
   return response.data;
 };
@@ -47,12 +47,12 @@ export const checkSession = async () => {
   return response.data.success;
 };
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
   const response = await nextServer.get<User>("/users/me");
   return response.data;
 };
 
-export const updateMe = async (body: UpdateMeRequest) => {
+export const updateMe = async (body: UpdateMeRequest): Promise<User> => {
   const response = await nextServer.patch<User>("/users/me", body);
   return response.data;
 };
