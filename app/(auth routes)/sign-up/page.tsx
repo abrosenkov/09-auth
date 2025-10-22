@@ -1,35 +1,36 @@
 "use client";
 
-import { register, RegisterRequest } from "@/lib/api/api";
-// app/(auth routes)/sign-up/page.tsx
-
 import css from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ApiError } from "@/app/api/api";
 import { useAuthStore } from "@/lib/store/authStore";
+import { register, RegisterRequest } from "@/lib/api/clientApi";
+import toast from "react-hot-toast";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const setUser = useAuthStore((state) => state.setUser);
+
   const handleSubmit = async (formData: FormData) => {
     try {
       const payload = Object.fromEntries(formData) as RegisterRequest;
       const data = await register(payload);
       if (data) {
         setUser(data);
+        toast.success("Registration successful!");
         router.push("/profile");
       } else {
         setError("Invalid email or password");
       }
-      console.log(data);
     } catch (error) {
       setError(
         (error as ApiError).response?.data?.error ??
           (error as ApiError).message ??
           "Oops... some error"
       );
+      toast.error("Oops... some error");
     }
   };
 

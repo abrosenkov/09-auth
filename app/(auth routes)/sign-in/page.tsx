@@ -1,11 +1,12 @@
 "use client";
 
-import { login, LoginRequest } from "@/lib/api/api";
 import css from "./page.module.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ApiError } from "@/app/api/api";
 import { useAuthStore } from "@/lib/store/authStore";
+import { login, LoginRequest } from "@/lib/api/clientApi";
+import toast from "react-hot-toast";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -17,17 +18,18 @@ export default function SignInPage() {
       const data = await login(payload);
       if (data) {
         setUser(data);
+        toast.success("Login successful!");
         router.push("/profile");
       } else {
         setError("Invalid email or password");
       }
-      console.log(data);
     } catch (error) {
       setError(
         (error as ApiError).response?.data?.error ??
           (error as ApiError).message ??
           "Oops... some error"
       );
+      toast.error("Oops... some error");
     }
   };
 

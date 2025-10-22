@@ -5,6 +5,7 @@ import Footer from "../components/Footer/Footer";
 import TanStackProvider from "../components/TanStackProvider/TanStackProvider";
 import { Roboto } from "next/font/google";
 import AuthProvider from "@/components/AuthProvider/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
       <body className={roboto.variable}>
         <TanStackProvider>
           <AuthProvider>
+            <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
             <Header />
             {children}
             {modal}

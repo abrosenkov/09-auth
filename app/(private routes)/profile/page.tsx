@@ -1,11 +1,17 @@
-import { getUser } from "@/lib/api/serverApi";
 import css from "./page.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
+import { getMe } from "@/lib/api/serverApi";
+
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "View and manage your user profile on NoteHub",
+};
 
 export default async function ProfilePage() {
-  const user = await getUser();
-  console.log(user);
+  const user = await getMe();
+
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
@@ -22,6 +28,7 @@ export default async function ProfilePage() {
             width={120}
             height={120}
             className={css.avatar}
+            priority
           />
         </div>
         <div className={css.profileInfo}>
